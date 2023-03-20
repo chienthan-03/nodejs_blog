@@ -1,0 +1,28 @@
+#footer {
+  color: rgb(124, 124, 125);
+}
+
+.card-course-item {
+  margin: 20px 0;
+}
+
+.img-cover {
+  object-fit: cover;
+  width: 286px;
+  height: 160px;
+}
+
+.description-hiden {
+    font-size: 1.4rem;
+    height: 3.6rem;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+a {
+  text-decoration: none;
+}
+

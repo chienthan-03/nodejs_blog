@@ -1,0 +1,149 @@
+<h1>Store</h1>
+  <a href="http://localhost:3000/me/trash/course">
+    <ion-icon name="trash-outline"></ion-icon>
+    My Trash ({{deletedCount}}) 
+  </a> 
+   
+  <form method="POST" name="container-form" class="mt-4" action="/courses/handle-form-actions">
+    <div class="d-flex align-items-center">
+      <div class="form-check" style="margin-left: 10px;">
+        <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+        <label class="form-check-label" for="checkbox-all">
+          Select all  
+        </label>
+      </div>
+
+      <select class="form-control form-control-sm" name="action" style="width: 146px; margin-left: 10px;">
+        <option value=""> --choose action-- </option>
+        <option value="delete">Delete</option>
+      </select>
+
+      <button class="btn btn-primary btn-sm check-all-submit-btn" style="margin-left: 10px;" disabled>
+        Perform
+      </button>
+    </div>
+
+  <table class="mt-4 table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">
+          Number
+
+        </th>
+        <th scope="col">
+          Name
+          {{{sortTable 'name' _sort}}}
+        </th>
+        <th scope="col" colspan="2">
+          Creation time
+          {{{sortTable 'createdAt' _sort}}}
+          </th>
+      </tr>
+    </thead>
+    <tbody>
+        {{#each courses}}
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="{{this._id}}" name="courseIds[]" id="defaultCheck1">
+                  <label class="form-check-label" for="defaultCheck1">
+                    {{sum @index 1}}
+                  </label>
+                </div>
+              </td>
+              <td>{{this.name}}</td>
+              <td>{{this.createdAt}}</td>
+              <td>
+                <a href="/courses/{{this._id}}/update" class="btn btn-link">Update</a>
+                <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this._id}}" data-target="#delete-course-modal">Delete</a>
+              </td>
+            </tr>
+            {{else}}
+            <tr>
+              <td colspan="5" class="text-center">
+                You haved not post any courses yet.
+                Click <a href="courses/create">here</a> to create course!!!
+              </td>
+            </tr>
+        {{/each}}
+    </tbody>
+  </table>
+</form>
+
+
+{{!-- confirm delete --}}
+<!-- Modal -->
+<div class="modal fade" id="delete-course-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">delete course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Would you want to delete course?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="btn-delete-course">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- delete hidden form --}}
+<form name="delete-course-form" method="POST"></form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  const formD = document.forms['delete-course-form']
+  //const formContriner = document.forms['container-form']
+  const formContainer = $('form[name="container-form"]')
+  const BtnDeleteCourse = document.getElementById('btn-delete-course')
+  const checkAll = $('#checkbox-all')
+  var courseItemCheckBox = $('input[name="courseIds[]"]')
+  var courseId
+  var checkAllSubmitBtn = $('.check-all-submit-btn')
+
+
+  $('#delete-course-modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    courseId = button.data('id') 
+  })
+
+
+  BtnDeleteCourse.onclick = () => {
+    //console.log(formD)
+    formD.action = '/courses/' + courseId + '?_method=DELETE'
+    formD.submit()
+  }
+
+  //check box all
+  checkAll.change(function() {
+    var isChecked = $(this).prop('checked')
+    courseItemCheckBox.prop('checked', isChecked)
+    renderCheckAllSubmit()
+  })
+
+  //item check box
+  courseItemCheckBox.change(function() {
+    var ischeckAll = courseItemCheckBox.length === $('input[name="courseIds[]"]:checked').length
+    checkAll.prop('checked', ischeckAll)  
+    renderCheckAllSubmit()  
+  })
+
+
+
+  //re-rebder check all submit btn
+  function renderCheckAllSubmit() {
+    var checkcount = $('input[name="courseIds[]"]:checked').length
+    if(checkcount) {
+      checkAllSubmitBtn.attr('disabled', false)
+    } else {
+      checkAllSubmitBtn.attr('disabled', true)
+    }
+  }
+})
+</script>

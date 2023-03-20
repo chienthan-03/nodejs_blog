@@ -1,0 +1,39 @@
+{
+  "name": "course_nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "watch": "node-sass --watch src/resources/scss/app.scss src/public/css/app.css",
+    "start": "nodemon --inspect src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chienthan-03/nodejs_blog.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "luanthanh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chienthan-03/nodejs_blog/issues"
+  },
+  "homepage": "https://github.com/chienthan-03/nodejs_blog#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "handlebars": "^4.7.7",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.4.6",
+    "mongoose-delete": "^0.5.4",
+    "mongoose-slug-generator": "^1.0.4",
+    "node-sass": "^7.0.1",
+    "nodemon": "^2.0.19",
+    "sass": "^1.53.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  }
+}
